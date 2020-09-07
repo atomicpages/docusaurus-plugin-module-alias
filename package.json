@@ -1,8 +1,7 @@
 {
     "name": "docusaurus-plugin-module-alias",
     "version": "0.0.1",
-    "description": "Some awesome description about your module",
-    "main": "index.js",
+    "description": "A tiny docusaurus 2 plugin for easy module alias creation",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint 'src/index.{ts,js,tsx}'",
