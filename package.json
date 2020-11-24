@@ -1,6 +1,6 @@
 {
     "name": "docusaurus-plugin-module-alias",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A tiny docusaurus 2 plugin for easy module alias creation",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
