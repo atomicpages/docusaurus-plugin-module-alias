@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import { Plugin, DocusaurusContext, OptionValidationContext } from '@docusaurus/types';
 
 type Options = {
