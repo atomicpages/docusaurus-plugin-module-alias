@@ -1,21 +1,27 @@
 name: Release
 on:
-    release:
-        types: [released]
+  push:
+    branches:
+      - main
 jobs:
-    publish:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v1
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: 12
-                  registry-url: https://registry.npmjs.org/
-            - name: npm install
-              run: |
-                npm i
-                npm run build
-            - name: publish
-              run: npm publish pkg/
-              env:
-                  NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm semantic-release

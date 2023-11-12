@@ -1,65 +1,58 @@
 {
-    "name": "docusaurus-plugin-module-alias",
-    "version": "0.0.2",
-    "description": "A tiny docusaurus 2 plugin for easy module alias creation",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "eslint 'src/index.{ts,js,tsx}'",
-        "build": "pika build"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "engines": {
-        "node": ">=6.4.0"
-    },
-    "keywords": [
-        "docusaurus",
-        "docusaurus2",
-        "docusaurus-plugin",
-        "webpack",
-        "alias",
-        "module-alias"
-    ],
-    "repository": {
-        "url": "https://github.com/atomicpages/docusaurus-plugin-module-alias",
-        "type": "git"
-    },
-    "author": "Dennis Thompson",
-    "license": "MIT",
-    "devDependencies": {
-        "@djthoms/eslint-config": "^3.0.0",
-        "@djthoms/prettier-config": "^2.0.0",
-        "@docusaurus/types": "^2.0.0-alpha.68",
-        "@pika/pack": "^0.5.0",
-        "@pika/plugin-build-node": "^0.9.2",
-        "@pika/plugin-ts-standard-pkg": "^0.9.2",
-        "eslint": "^7.14.0",
-        "prettier": "^2.2.0",
-        "typescript": "^4.1.2"
-    },
-    "@pika/pack": {
-        "pipeline": [
-            [
-                "@pika/plugin-ts-standard-pkg"
-            ],
-            [
-                "@pika/plugin-build-node"
-            ]
-        ]
-    },
-    "prettier": "@djthoms/prettier-config",
-    "eslintConfig": {
-        "env": {
-            "node": true
-        },
-        "extends": [
-            "@djthoms/eslint-config",
-            "@djthoms/eslint-config/esmodules",
-            "@djthoms/eslint-config/typescript"
-        ]
-    },
-    "dependencies": {
-        "joi": "^17.3.0"
-    }
+  "name": "docusaurus-plugin-module-alias",
+  "version": "0.0.2",
+  "description": "A tiny docusaurus 2 plugin for easy module alias creation",
+  "keywords": [
+    "docusaurus",
+    "docusaurus2",
+    "docusaurus-plugin",
+    "webpack",
+    "alias",
+    "module-alias"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atomicpages/docusaurus-plugin-module-alias"
+  },
+  "license": "MIT",
+  "author": "Dennis Thompson",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint 'src/index.{ts,js,tsx}'",
+    "prebuild": "rm -rf dist",
+    "build": "npm-run-all -p build:*",
+    "prepare": "is-ci || husky install",
+    "build:esm": "esbuild --sourcemap --format=esm --target=es2019 --outdir=dist/esm ./src/index.ts",
+    "build:cjs": "esbuild --sourcemap --format=cjs --target=es2017 --outdir=dist/cjs ./src/index.ts",
+    "build:types": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "superstruct": "^1.0.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.1",
+    "@commitlint/config-conventional": "^18.4.0",
+    "@djthoms/eslint-config": "^6.1.1",
+    "@djthoms/prettier-config": "^4.3.0",
+    "@docusaurus/types": "^3.0.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@types/node": "^20.9.0",
+    "@vitest/coverage-v8": "^0.34.6",
+    "esbuild": "^0.19.5",
+    "husky": "^8.0.3",
+    "is-ci": "^3.0.1",
+    "lint-staged": "^15.1.0",
+    "npm-run-all": "^4.1.5",
+    "semantic-release": "^22.0.7",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6",
+    "webpack-merge": "^5.10.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -1,38 +1,61 @@
-import Joi from 'joi';
-import { Plugin, DocusaurusContext, OptionValidationContext } from '@docusaurus/types';
+import { object, record, string, optional, define, is } from "superstruct";
+import type {
+  Plugin,
+  DocusaurusContext,
+  OptionValidationContext,
+} from "@docusaurus/types";
+
+type CustomizeRuleString = "match" | "merge" | "append" | "prepend" | "replace";
 
 type Options = {
-    alias: Record<string, string>;
-    mergeStrategy?: Record<string, string>;
+  alias: Record<string, string>;
+  mergeStrategy?: Record<string, CustomizeRuleString>;
 };
 
-const BLACKLIST = ['@site', '@generated', '@docusaurus', '~docs', '~blog', '~pages', '~debug'];
+const BLACKLIST = [
+  "@site",
+  "@generated",
+  "@docusaurus",
+  "~docs",
+  "~blog",
+  "~pages",
+  "~debug",
+] as const;
+
+const WhitelistedString = define<string>("WhitelistedString", (value) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+  return !BLACKLIST.includes(value as any);
+});
+
+const name = "docusaurus-plugin-local-resolve";
 
 export default function plugin(
-    context: DocusaurusContext,
-    { alias, mergeStrategy }: Options
+  _: DocusaurusContext,
+  { alias, mergeStrategy }: Options,
 ): Plugin<void> {
-    return {
-        name: 'docusaurus-plugin-local-resolve',
-        configureWebpack() {
-            return {
-                mergeStrategy,
-                resolve: {
-                    alias,
-                },
-            };
+  return {
+    name,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    configureWebpack() {
+      return {
+        mergeStrategy,
+        resolve: {
+          alias,
         },
-    };
+      };
+    },
+  };
 }
 
-export const validateOptions = ({ options, validate }: OptionValidationContext<Options>) => {
-    return validate(
-        Joi.object({
-            alias: Joi.object()
-                .pattern(Joi.string().invalid(...BLACKLIST), Joi.string())
-                .required(),
-            mergeStrategy: Joi.object().pattern(Joi.string(), Joi.string()),
-        }),
-        options
-    );
+const optionSchema = object({
+  alias: record(WhitelistedString, string()),
+  mergeStrategy: optional(record(string(), string())),
+});
+
+export const validateOptions = ({
+  options, // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}: Omit<OptionValidationContext<Options, any>, "validate">): boolean => {
+  return is(options, optionSchema);
 };

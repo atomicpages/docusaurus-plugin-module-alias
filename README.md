@@ -11,33 +11,36 @@ yarn add docusaurus-plugin-module-alias --dev
 
 ## Why?
 
-Docusaurus 2.x uses webpack to build SSR and client bundles. Creating a plugin to add a module alias for every new docusaurus site can be easily modularized.
+Docusaurus 2.x uses webpack to build SSR and client bundles. Creating a plugin
+to add a module alias for every new docusaurus site can be easily modularized.
 
 ## Usage
 
-Inside your `docusaurus.config.js` add to the `plugins` field and configure with the `alias` option :+1:
+Inside your `docusaurus.config.js` add to the `plugins` field and configure with
+the `alias` option :+1:
 
 ```js
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-    // ...
-    plugins: [
-        [
-            'docusaurus-plugin-module-alias',
-            {
-                alias: {
-                    '@local/component': path.resolve(__dirname, '../src/index.js'),
-                },
-            },
-        ],
+  // ...
+  plugins: [
+    [
+      "docusaurus-plugin-module-alias",
+      {
+        alias: {
+          "@local/component": path.resolve(__dirname, "../src/index.js"),
+        },
+      },
     ],
+  ],
 };
 ```
 
 ### Invalid Aliases
 
-Docusaurus has special aliases that shouldn't be overridden: `@site`, `@generated`, `@docusaurus`, `~docs`, `~blog`, `~pages`, `~debug`
+Docusaurus has special aliases that shouldn't be overridden: `@site`,
+`@generated`, `@docusaurus`, `~docs`, `~blog`, `~pages`, `~debug`
 
 ## Options
 
