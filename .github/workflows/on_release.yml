@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - next
 jobs:
   release:
     name: Release
@@ -20,6 +21,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Test
+        run: pnpm t
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
