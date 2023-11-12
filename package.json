@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-module-alias",
-  "version": "0.0.2",
+  "version": "0.1.0-next.1",
   "description": "A tiny docusaurus 2 plugin for easy module alias creation",
   "keywords": [
     "docusaurus",
